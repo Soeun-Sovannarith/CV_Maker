@@ -1,0 +1,176 @@
+import React, { forwardRef } from 'react';
+import { Phone, Mail, MapPin, Globe } from 'lucide-react';
+
+const CVPreview = forwardRef(({ data }, ref) => {
+    const { personal, summary, experience, education, skills, languages } = data;
+
+    const SectionHeader = ({ title, letter }) => (
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', position: 'relative' }}>
+            <div style={{
+                position: 'absolute',
+                left: '0',
+                top: '-5px',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: '#e6e6e6',
+                zIndex: 0
+            }}></div>
+            <h3 style={{
+                position: 'relative',
+                zIndex: 1,
+                fontSize: '14px',
+                fontWeight: 'bold',
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                margin: 0,
+                paddingLeft: '10px'
+            }}>
+                {title}
+            </h3>
+        </div>
+    );
+
+    return (
+        <div ref={ref} className="cv-preview" style={{
+            width: '100%',
+            height: '100%',
+            padding: '40px 50px',
+            fontFamily: "'Inter', sans-serif",
+            color: '#444'
+        }}>
+            {/* Header */}
+            <header style={{ textAlign: 'center', marginBottom: '40px' }}>
+                <h1 style={{
+                    fontSize: '42px',
+                    fontWeight: '300',
+                    textTransform: 'uppercase',
+                    letterSpacing: '5px',
+                    margin: '0 0 10px 0',
+                    color: '#333'
+                }}>
+                    {personal.name}
+                </h1>
+                <h2 style={{
+                    fontSize: '14px',
+                    fontWeight: '300',
+                    textTransform: 'uppercase',
+                    letterSpacing: '3px',
+                    margin: 0,
+                    color: '#666'
+                }}>
+                    {personal.title}
+                </h2>
+            </header>
+
+            <hr style={{ border: 'none', borderTop: '1px solid #ccc', marginBottom: '40px' }} />
+
+            <div style={{ display: 'flex', gap: '40px' }}>
+                {/* Left Column */}
+                <div style={{ width: '35%', borderRight: '1px solid #ccc', paddingRight: '20px' }}>
+
+                    {/* Contact */}
+                    <div style={{ marginBottom: '40px' }}>
+                        <SectionHeader title="CONTACT" />
+                        <div style={{ fontSize: '12px', lineHeight: '2' }}>
+                            {personal.phone && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <Phone size={12} fill="#555" strokeWidth={0} />
+                                    <span>{personal.phone}</span>
+                                </div>
+                            )}
+                            {personal.email && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <Mail size={12} fill="#555" strokeWidth={0} />
+                                    <span>{personal.email}</span>
+                                </div>
+                            )}
+                            {personal.address && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <MapPin size={12} fill="#555" strokeWidth={0} />
+                                    <span>{personal.address}</span>
+                                </div>
+                            )}
+                            {personal.website && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <Globe size={12} fill="#555" strokeWidth={0} />
+                                    <span>{personal.website}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Education */}
+                    <div style={{ marginBottom: '40px' }}>
+                        <SectionHeader title="EDUCATION" />
+                        {education.map((edu) => (
+                            <div key={edu.id} style={{ marginBottom: '20px' }}>
+                                <div style={{ fontSize: '12px', fontWeight: 'bold' }}>{edu.start} - {edu.end}</div>
+                                <div style={{ fontSize: '12px', textTransform: 'uppercase', fontWeight: '600', marginBottom: '4px' }}>{edu.school}</div>
+                                <div style={{ fontSize: '12px', color: '#555' }}>• {edu.degree}</div>
+                                {edu.description && <div style={{ fontSize: '12px', color: '#555' }}>• {edu.description}</div>}
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Skills */}
+                    <div style={{ marginBottom: '40px' }}>
+                        <SectionHeader title="SKILLS" />
+                        <ul style={{ paddingLeft: '15px', margin: 0 }}>
+                            {skills.map((skill, index) => (
+                                <li key={index} style={{ fontSize: '12px', lineHeight: '1.8', marginBottom: '4px' }}>
+                                    {skill}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Languages */}
+                    <div>
+                        <SectionHeader title="LANGUAGES" />
+                        <ul style={{ paddingLeft: '15px', margin: 0 }}>
+                            {languages.map((lang, index) => (
+                                <li key={index} style={{ fontSize: '12px', lineHeight: '1.8', marginBottom: '4px' }}>
+                                    <span style={{ fontWeight: 600 }}>{lang.language}:</span> {lang.proficiency}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                </div>
+
+                {/* Right Column */}
+                <div style={{ width: '65%' }}>
+
+                    {/* Profile Summary */}
+                    <div style={{ marginBottom: '40px' }}>
+                        <SectionHeader title="PROFILE SUMMARY" />
+                        <p style={{ fontSize: '12px', lineHeight: '1.6', color: '#555' }}>
+                            {summary}
+                        </p>
+                    </div>
+
+                    {/* Work Experience */}
+                    <div>
+                        <SectionHeader title="WORK EXPERIENCE" />
+                        {experience.map((exp) => (
+                            <div key={exp.id} style={{ marginBottom: '25px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+                                    <h4 style={{ fontSize: '13px', fontWeight: 'bold', margin: 0 }}>{exp.company}</h4>
+                                    <span style={{ fontSize: '12px', color: '#666' }}>{exp.start} - {exp.end}</span>
+                                </div>
+                                <div style={{ fontSize: '12px', fontStyle: 'italic', marginBottom: '8px', color: '#444' }}>{exp.role}</div>
+                                <p style={{ fontSize: '12px', lineHeight: '1.6', color: '#555', whiteSpace: 'pre-line' }}>
+                                    {exp.description}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    );
+});
+
+export default CVPreview;

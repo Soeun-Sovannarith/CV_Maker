@@ -1,0 +1,168 @@
+:root {
+  --primary-color: #333;
+  --secondary-color: #666;
+  --accent-color: #f0f0f0;
+  --font-main: 'Helvetica', 'Arial', sans-serif;
+  --spacing-unit: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background-color: #f5f5f5;
+  color: var(--primary-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+.title {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Layout for the main app */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .app-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.editor-section {
+  flex: 1;
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.preview-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.preview-container {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform-origin: top center;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent-color);
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+  border-color: #888;
+  outline: none;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+button.add-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+button.remove-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.download-btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(46, 204, 113, 0.3);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.download-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(46, 204, 113, 0.3);
+}
+
+.item-group {
+  border: 1px solid #eee;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.toolbar {
+    position: sticky;
+    top: 20px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
