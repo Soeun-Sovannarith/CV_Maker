@@ -3,77 +3,108 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
+import CVPreview2 from './components/CVPreview2';
 import { Download } from 'lucide-react';
 
 function App() {
+  const [selectedTemplate, setSelectedTemplate] = useState('template2');
   const [cvData, setCvData] = useState({
     personal: {
-      name: 'OLIVIA WILSON',
-      title: 'MARKETING MANAGER',
-      phone: '+123-456-7890',
-      email: 'hello@reallygreatsite.com',
-      address: '123 Anywhere St., Any City',
-      website: 'www.reallygreatsite.com'
+      name: 'SOEUN SOVANNARITH',
+      title: 'SYSTEM INTEGRATION OFFICER',
+      phone: '+855 16992144',
+      email: 'soeunsovannarith64@gmail.com',
+      address: 'Prek Eng District, Chbar Ampov Commune, Phnom Penh City',
+      website: 'https://portfolio.rith.codes',
+      linkedin: 'linkedin.com/in/soeun-sovannarith-116858291',
+      github: 'github.com/Soeun-Sovannarith'
     },
-    summary: 'Experienced and results-driven Marketing Manager with a proven track record in developing and executing successful marketing strategies. I am seeking a challenging role where I can contribute my skills in strategic planning, team leadership, and creative problem-solving to achieve business objectives.',
+    summary: 'System Integration Officer specializing in Java, Spring Boot, and enterprise middleware, with proven experience designing and developing secure RESTful and SOAP web services. Deeply familiar with SDLC methodologies, OOP principles, and rigorous banking IT policies. Skilled in implementing robust security frameworks (JWT/OAuth2) and administering Linux/SQL Server infrastructure. Highly adaptable and ready to master ESB platforms like Fiorano to ensure seamless, risk-mitigated cross-system integrations.',
     experience: [
       {
         id: 1,
-        company: 'Borcelle Studio',
-        role: 'Marketing Manager & Specialist',
-        start: '2030',
-        end: 'PRESENT',
-        description: '• Led the development and implementation of comprehensive marketing strategies that resulted in a 20% increase in brand visibility.\n• Successfully launched and managed multiple cross-channel campaigns, including digital marketing, social media.'
+        company: 'KSHRD Center - SnapPOS Full-Stack POS Platform',
+        role: 'Full-Stack Developer (Group Final Project)',
+        start: 'Jan 2026',
+        end: 'Jul 2026',
+        description: '• Developed and integrated applications based on agreed design and architecture using Java (Spring Boot) and OOP principles, implementing role-based access control with Spring Security across POS endpoints.\n• Designed and documented comprehensive RESTful APIs, facilitating seamless integration with third-party systems like the Bakong KHQR gateway via reverse proxies and middleware.\n• Administered deployment environments on Linux servers, configuring Nginx, Docker, and dual CI/CD pipelines (GitHub Actions) while strictly adhering to SDLC methodologies.\n• Tested patches and conducted root-cause analysis on production APIs to resolve vulnerabilities and ensure high system integrity in alignment with risk policies.'
       },
       {
         id: 2,
-        company: 'Fauget Studio',
-        role: 'Marketing Manager & Specialist',
-        start: '2025',
-        end: '2029',
-        description: '• Conducted market research to identify emerging trends and consumer preferences, providing valuable insights for product development.\n• Oversaw the creation of engaging content for various platforms, collaborating with internal teams.'
-      },
-      {
-        id: 3,
-        company: 'Studio Shodwe',
-        role: 'Marketing Manager & Specialist',
-        start: '2024',
-        end: '2025',
-        description: '• Developed and executed targeted marketing campaigns, resulting in a 25% increase in lead generation.\n• Implemented SEO strategies that improved website traffic by 30%.'
+        company: 'Self-Employed',
+        role: 'Freelance Backend Developer (Independent Projects)',
+        start: '2023',
+        end: 'PRESENT',
+        description: '• Analyzed, designed, and developed robust RESTful and SOAP web services using Java and Spring Boot, strictly following SDLC practices and IT risk control guidelines.\n• Integrated diverse backend systems and administered Linux environments, providing comprehensive support for seamless system operations.\n• Implemented robust security frameworks (JWT/OAuth2) and patched misconfigurations, actively identifying and mitigating risks in day-to-day operations.\n• Managed source code using Git and collaborated closely with external software providers to ensure API integrations aligned with the overall program architecture.'
       }
     ],
     education: [
       {
         id: 1,
-        school: 'BORCELLE UNIVERSITY',
-        degree: 'Master of Business Management',
-        start: '2029',
-        end: '2030',
+        school: 'KSHRD CENTER',
+        degree: 'Full-Stack Development',
+        start: 'Jan 2026',
+        end: 'Jul 2026',
         description: ''
       },
       {
         id: 2,
-        school: 'BORCELLE UNIVERSITY',
-        degree: 'Bachelor of Business Management',
-        start: '2025',
-        end: '2029',
-        description: 'GPA: 3.8 / 4.0'
+        school: 'ABOVE AND BEYOND',
+        degree: 'Prompt Engineering',
+        start: 'Dec 2025',
+        end: '',
+        description: ''
+      },
+      {
+        id: 3,
+        school: 'THE UNIVERSITY OF CAMBODIA',
+        degree: 'Bachelor of Information Technology',
+        start: '2022',
+        end: 'PRESENT',
+        description: 'GPA: 3.85'
+      },
+      {
+        id: 4,
+        school: 'INSTITUTE OF FOREIGN LANGUAGES',
+        degree: 'Bachelor of Education (TEFL)',
+        start: '2022',
+        end: 'PRESENT',
+        description: 'GPA: 3.07'
       }
     ],
+    certifications: [],
     skills: [
-      'Project Management',
-      'Public Relations',
-      'Teamwork',
-      'Time Management',
-      'Leadership',
-      'Effective Communication',
-      'Critical Thinking'
+      'Middleware & Integration: Web Services (SOAP/REST), API Documentation, ESB Platforms (Fiorano, WS02 Familiarity)',
+      'Software Development: Java, OOP, Spring Boot,SDLC Methodologies, Git/SVN',
+      'App Security & Risk: Spring Security, JWT/OAuth2, Vulnerability Mitigation, IT Policy Compliance',
+      'Infrastructure & Admin: Linux/Sun Solaris OS Administration, SQL Server/DBs, Docker, CI/CD'
     ],
     languages: [
-      { language: 'English', proficiency: 'Fluent' },
-      { language: 'French', proficiency: 'Fluent' },
-      { language: 'German', proficiency: 'Basics' },
-      { language: 'Spanish', proficiency: 'Intermediate' }
+      { language: 'Khmer', proficiency: 'Native' },
+      { language: 'English', proficiency: 'Fluent' }
+    ],
+    references: [
+      {
+        id: 1,
+        name: 'VICHHAIY SEREY',
+        title: 'DevSecOps Team Lead, ABA BANK',
+        phone: '+855 15370170',
+        email: 'vichhaiyserey@gmail.com'
+      },
+      {
+        id: 2,
+        name: 'YOULAY HANG',
+        title: 'Senior Project Manager, FTB BANK',
+        phone: '+855 968650464',
+        email: 'Youlayhang.com'
+      },
+      {
+        id: 3,
+        name: 'PHANNARITH DUY',
+        title: 'Human Resource Director and Admin, Aqua Lagoon Real Estate',
+        phone: '+855 61858838',
+        email: 'hayashimotomori@gmail.com'
+      }
     ]
   });
 
@@ -85,15 +116,21 @@ function App() {
 
     try {
       const canvas = await html2canvas(element, {
-        scale: 2, // Higher scale for better quality
+        scale: 4, // Increased scale for much sharper text
         useCORS: true,
-        logging: true,
+        logging: false,
       });
 
+      // Use PNG instead of JPEG to prevent text compression artifacts
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdf = new jsPDF({
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4',
+        compress: true
+      });
+
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
 
       // Calculate height to maintain aspect ratio
       const imgProps = pdf.getImageProperties(imgData);
@@ -119,7 +156,12 @@ function App() {
         newSkills[index] = value;
         return { ...prev, skills: newSkills };
       }
-      if (['experience', 'education', 'languages'].includes(section)) {
+      if (section === 'certifications') {
+        const newCerts = [...prev.certifications];
+        newCerts[index] = value;
+        return { ...prev, certifications: newCerts };
+      }
+      if (['experience', 'education', 'languages', 'references'].includes(section)) {
         const newItems = [...prev[section]];
         if (field) {
           newItems[index] = { ...newItems[index], [field]: value };
@@ -147,8 +189,14 @@ function App() {
       if (section === 'skills') {
         return { ...prev, skills: [...prev.skills, 'New Skill'] };
       }
+      if (section === 'certifications') {
+        return { ...prev, certifications: [...prev.certifications, 'New Certification'] };
+      }
       if (section === 'languages') {
         return { ...prev, languages: [...prev.languages, { language: 'Language', proficiency: 'Level' }] };
+      }
+      if (section === 'references') {
+        return { ...prev, references: [...prev.references, { id: Date.now(), name: 'Name', title: 'Title', phone: 'Phone', email: 'Email' }] };
       }
       return prev;
     });
@@ -159,6 +207,9 @@ function App() {
       if (section === 'skills') {
         return { ...prev, skills: prev.skills.filter((_, i) => i !== index) };
       }
+      if (section === 'certifications') {
+        return { ...prev, certifications: prev.certifications.filter((_, i) => i !== index) };
+      }
       return { ...prev, [section]: prev[section].filter((_, i) => i !== index) };
     });
   };
@@ -166,7 +217,15 @@ function App() {
   return (
     <div className="app-container">
       <div className="editor-section">
-        <div className="toolbar">
+        <div className="toolbar" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <select
+            value={selectedTemplate}
+            onChange={(e) => setSelectedTemplate(e.target.value)}
+            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+          >
+            <option value="template1">Template 1 (Classic)</option>
+            <option value="template2">Template 2 (Modern Timeline)</option>
+          </select>
           <button className="download-btn" onClick={handleDownloadPdf}>
             <Download size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             Download PDF
@@ -181,7 +240,11 @@ function App() {
       </div>
       <div className="preview-section">
         <div className="preview-container">
-          <CVPreview ref={printRef} data={cvData} />
+          {selectedTemplate === 'template1' ? (
+            <CVPreview ref={printRef} data={cvData} />
+          ) : (
+            <CVPreview2 ref={printRef} data={cvData} />
+          )}
         </div>
       </div>
     </div>

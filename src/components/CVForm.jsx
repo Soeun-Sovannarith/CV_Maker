@@ -68,6 +68,26 @@ const CVForm = ({ data, onChange, onAddItem, onRemoveItem }) => {
                         />
                     </div>
                 </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '10px' }}>
+                    <div>
+                        <label>LinkedIn</label>
+                        <input
+                            type="text"
+                            value={data.personal.linkedin || ''}
+                            onChange={(e) => handleChange('personal', 'linkedin', e.target.value)}
+                            placeholder="LinkedIn URL"
+                        />
+                    </div>
+                    <div>
+                        <label>GitHub</label>
+                        <input
+                            type="text"
+                            value={data.personal.github || ''}
+                            onChange={(e) => handleChange('personal', 'github', e.target.value)}
+                            placeholder="GitHub URL"
+                        />
+                    </div>
+                </div>
 
             </section>
 
@@ -204,6 +224,27 @@ const CVForm = ({ data, onChange, onAddItem, onRemoveItem }) => {
                 </button>
             </section>
 
+            {/* Certifications */}
+            {data.certifications && (
+                <section className="form-group">
+                    <h3 className="section-title">Certifications</h3>
+                    {data.certifications.map((cert, index) => (
+                        <div key={index} style={{ display: 'flex', marginBottom: '8px' }}>
+                            <input
+                                type="text"
+                                value={cert}
+                                onChange={(e) => handleChange('certifications', null, e.target.value, index)}
+                                style={{ marginBottom: 0 }}
+                            />
+                            <button className="remove-btn" onClick={() => onRemoveItem('certifications', index)}>X</button>
+                        </div>
+                    ))}
+                    <button className="add-btn" onClick={() => onAddItem('certifications')}>
+                        <Plus size={14} style={{ display: 'inline', marginRight: '4px' }} /> Add Certification
+                    </button>
+                </section>
+            )}
+
             {/* Languages */}
             <section className="form-group">
                 <h3 className="section-title">Languages</h3>
@@ -232,6 +273,53 @@ const CVForm = ({ data, onChange, onAddItem, onRemoveItem }) => {
                     <Plus size={14} style={{ display: 'inline', marginRight: '4px' }} /> Add Language
                 </button>
             </section>
+
+            {/* References */}
+            {data.references && (
+                <section className="form-group">
+                    <h3 className="section-title">References</h3>
+                    {data.references.map((ref, index) => (
+                        <div key={ref.id} className="item-group">
+                            <label>Name</label>
+                            <input
+                                type="text"
+                                value={ref.name}
+                                onChange={(e) => handleChange('references', 'name', e.target.value, index)}
+                            />
+                            <label>Title</label>
+                            <input
+                                type="text"
+                                value={ref.title}
+                                onChange={(e) => handleChange('references', 'title', e.target.value, index)}
+                            />
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                                <div>
+                                    <label>Phone</label>
+                                    <input
+                                        type="text"
+                                        value={ref.phone}
+                                        onChange={(e) => handleChange('references', 'phone', e.target.value, index)}
+                                    />
+                                </div>
+                                <div>
+                                    <label>Email</label>
+                                    <input
+                                        type="text"
+                                        value={ref.email}
+                                        onChange={(e) => handleChange('references', 'email', e.target.value, index)}
+                                    />
+                                </div>
+                            </div>
+                            <button className="remove-btn" onClick={() => onRemoveItem('references', index)}>
+                                <Trash2 size={12} style={{ display: 'inline', marginRight: '4px' }} /> Remove
+                            </button>
+                        </div>
+                    ))}
+                    <button className="add-btn" onClick={() => onAddItem('references')}>
+                        <Plus size={14} style={{ display: 'inline', marginRight: '4px' }} /> Add Reference
+                    </button>
+                </section>
+            )}
         </div>
     );
 };
