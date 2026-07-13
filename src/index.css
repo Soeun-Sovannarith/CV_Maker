@@ -166,3 +166,57 @@ button.remove-btn {
     justify-content: center;
     width: 100%;
 }
+
+@media print {
+  @page {
+    margin: 0; /* Remove browser default margins (headers/footers) */
+  }
+  
+  body {
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .app-container {
+    display: block;
+    padding: 0;
+    margin: 0;
+  }
+
+  .editor-section, .toolbar {
+    display: none !important;
+  }
+
+  .preview-section {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .preview-container {
+    width: 100%;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    min-height: auto;
+  }
+
+  /* Prevent page breaks inside important elements */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  
+  /* Try to keep items together */
+  .cv-preview > div, .cv-preview2 > div {
+    page-break-inside: auto;
+  }
+  
+  /* For Timeline Items in CVPreview2 and basic items in CVPreview */
+  div[style*="marginBottom: '10px'"], div[style*="marginBottom: '15px'"] {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

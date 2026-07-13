@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
-import { Phone, Mail, MapPin, Globe, Linkedin, Github, User, Briefcase, GraduationCap } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Linkedin, Github, User, Briefcase, GraduationCap, Code } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 const CVPreview2 = forwardRef(({ data }, ref) => {
     const { personal, summary, experience, education, skills, languages, references, certifications } = data;
@@ -76,7 +77,7 @@ const CVPreview2 = forwardRef(({ data }, ref) => {
                         backgroundColor: '#e6e6ea'
                     }}>
                         <img
-                            src="/me.JPG"
+                            src={`${import.meta.env.BASE_URL}me.JPG`}
                             alt="Profile"
                             style={{
                                 width: '100%',
@@ -150,13 +151,24 @@ const CVPreview2 = forwardRef(({ data }, ref) => {
                     {certifications && certifications.length > 0 && (
                         <div style={{ marginBottom: '15px' }}>
                             <LeftSectionHeader title="CERTIFICATIONS" />
-                            <ul style={{ paddingLeft: '15px', margin: 0 }}>
-                                {certifications.map((cert, index) => (
-                                    <li key={index} style={{ fontSize: '11px', lineHeight: '1.6', marginBottom: '6px' }}>
-                                        {cert}
-                                    </li>
-                                ))}
-                            </ul>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                                {certifications.map((cert, index) => {
+                                    const isObject = typeof cert === 'object' && cert !== null;
+                                    const link = isObject ? cert.link : '';
+                                    const name = isObject ? cert.name : cert;
+                                    const id = isObject ? cert.id : index;
+                                    return (
+                                        <div key={id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '60px' }}>
+                                            <div style={{ padding: '3px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px' }}>
+                                                <QRCodeSVG value={link || ' '} size={52} />
+                                            </div>
+                                            <div style={{ fontSize: '9px', fontWeight: 'bold', color: '#333', textAlign: 'center', lineHeight: '1.2' }}>
+                                                {name}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
                     )}
 
@@ -241,6 +253,24 @@ const CVPreview2 = forwardRef(({ data }, ref) => {
                             </TimelineItem>
                         ))}
                     </RightSection>
+
+                    {/* Projects */}
+                    {data.projects && data.projects.length > 0 && (
+                        <RightSection title="PROJECTS" icon={Code}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-between' }}>
+                                {data.projects.map((proj) => (
+                                    <div key={proj.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '76px' }}>
+                                        <div style={{ padding: '3px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px' }}>
+                                            <QRCodeSVG value={proj.link || ' '} size={68} />
+                                        </div>
+                                        <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#333', textAlign: 'center', lineHeight: '1.2' }}>
+                                            {proj.name}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </RightSection>
+                    )}
 
                 </div>
             </div>

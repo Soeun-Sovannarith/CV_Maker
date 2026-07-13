@@ -11,7 +11,7 @@ function App() {
   const [cvData, setCvData] = useState({
     personal: {
       name: 'SOEUN SOVANNARITH',
-      title: 'SYSTEM INTEGRATION OFFICER',
+      title: 'BACKEND DEVELOPER - JAVA',
       phone: '+855 16992144',
       email: 'soeunsovannarith64@gmail.com',
       address: 'Prek Eng District, Chbar Ampov Commune, Phnom Penh City',
@@ -19,7 +19,7 @@ function App() {
       linkedin: 'linkedin.com/in/soeun-sovannarith-116858291',
       github: 'github.com/Soeun-Sovannarith'
     },
-    summary: 'System Integration Officer specializing in Java, Spring Boot, and enterprise middleware, with proven experience designing and developing secure RESTful and SOAP web services. Deeply familiar with SDLC methodologies, OOP principles, and rigorous banking IT policies. Skilled in implementing robust security frameworks (JWT/OAuth2) and administering Linux/SQL Server infrastructure. Highly adaptable and ready to master ESB platforms like Fiorano to ensure seamless, risk-mitigated cross-system integrations.',
+    summary: 'Backend Developer specializing in Java and the Spring framework, with proven experience developing robust RESTful and SOAP APIs for internal and external usage. Strong foundation in Object-Oriented Programming (OOP) and comprehensive knowledge of SQL, RDBMS, and database design. Adept at cross-functional collaboration to solve complex problems, maintain backend applications, and assist in creating system designs and functional specifications for new projects. Skilled in supporting seamless system integrations with third-party partners.',
     experience: [
       {
         id: 1,
@@ -72,12 +72,18 @@ function App() {
         description: 'GPA: 3.07'
       }
     ],
-    certifications: [],
+    certifications: [
+      { id: 1, name: 'AWS Certified Developer', link: 'https://aws.amazon.com' }
+    ],
+    projects: [
+      { id: 1, name: 'Portfolio Website', link: 'https://portfolio.rith.codes' }
+    ],
     skills: [
-      'Middleware & Integration: Web Services (SOAP/REST), API Documentation, ESB Platforms (Fiorano, WS02 Familiarity)',
-      'Software Development: Java, OOP, Spring Boot,SDLC Methodologies, Git/SVN',
-      'App Security & Risk: Spring Security, JWT/OAuth2, Vulnerability Mitigation, IT Policy Compliance',
-      'Infrastructure & Admin: Linux/Sun Solaris OS Administration, SQL Server/DBs, Docker, CI/CD'
+      'Backend Development: Java, Spring Framework (Spring Boot), Object-Oriented Programming (OOP), System Design',
+      'API & Integration: RESTful & SOAP API Development, Third-Party System Integration, Middleware Solutions',
+      'Database & Architecture: SQL, Oracle, RDBMS, Database Design, Performance Optimization',
+      'Software Engineering: Cross-Functional Team Collaboration, Bug Fixing & Maintenance, SDLC Methodologies, Git',
+      'App Security & Infrastructure: Spring Security, JWT/OAuth2, Linux OS Administration, Docker, CI/CD'
     ],
     languages: [
       { language: 'Khmer', proficiency: 'Native' },
@@ -110,37 +116,8 @@ function App() {
 
   const printRef = useRef();
 
-  const handleDownloadPdf = async () => {
-    const element = printRef.current;
-    if (!element) return;
-
-    try {
-      const canvas = await html2canvas(element, {
-        scale: 4, // Increased scale for much sharper text
-        useCORS: true,
-        logging: false,
-      });
-
-      // Use PNG instead of JPEG to prevent text compression artifacts
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'p',
-        unit: 'mm',
-        format: 'a4',
-        compress: true
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-
-      // Calculate height to maintain aspect ratio
-      const imgProps = pdf.getImageProperties(imgData);
-      const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
-      pdf.save('resume.pdf');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-    }
+  const handleDownloadPdf = () => {
+    window.print();
   };
 
   const handleChange = (section, field, value, index = null) => {
@@ -156,15 +133,12 @@ function App() {
         newSkills[index] = value;
         return { ...prev, skills: newSkills };
       }
-      if (section === 'certifications') {
-        const newCerts = [...prev.certifications];
-        newCerts[index] = value;
-        return { ...prev, certifications: newCerts };
-      }
-      if (['experience', 'education', 'languages', 'references'].includes(section)) {
+      if (['experience', 'education', 'languages', 'references', 'projects', 'certifications'].includes(section)) {
         const newItems = [...prev[section]];
         if (field) {
-          newItems[index] = { ...newItems[index], [field]: value };
+          const oldItem = newItems[index];
+          const itemObject = typeof oldItem === 'string' ? { id: Date.now(), name: oldItem, link: '' } : oldItem;
+          newItems[index] = { ...itemObject, [field]: value };
         }
         return { ...prev, [section]: newItems };
       }
@@ -186,11 +160,17 @@ function App() {
           education: [...prev.education, { id: Date.now(), school: 'University', degree: 'Degree', start: '2020', end: '2024', description: '' }]
         };
       }
+      if (section === 'projects') {
+        return {
+          ...prev,
+          projects: [...prev.projects, { id: Date.now(), name: 'New Project', link: 'https://example.com' }]
+        };
+      }
       if (section === 'skills') {
         return { ...prev, skills: [...prev.skills, 'New Skill'] };
       }
       if (section === 'certifications') {
-        return { ...prev, certifications: [...prev.certifications, 'New Certification'] };
+        return { ...prev, certifications: [...prev.certifications, { id: Date.now(), name: 'New Certification', link: 'https://example.com' }] };
       }
       if (section === 'languages') {
         return { ...prev, languages: [...prev.languages, { language: 'Language', proficiency: 'Level' }] };
@@ -206,9 +186,6 @@ function App() {
     setCvData(prev => {
       if (section === 'skills') {
         return { ...prev, skills: prev.skills.filter((_, i) => i !== index) };
-      }
-      if (section === 'certifications') {
-        return { ...prev, certifications: prev.certifications.filter((_, i) => i !== index) };
       }
       return { ...prev, [section]: prev[section].filter((_, i) => i !== index) };
     });

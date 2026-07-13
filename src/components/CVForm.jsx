@@ -205,6 +205,35 @@ const CVForm = ({ data, onChange, onAddItem, onRemoveItem }) => {
                 </button>
             </section>
 
+            {/* Projects */}
+            {data.projects && (
+                <section className="form-group">
+                    <h3 className="section-title">Projects</h3>
+                    {data.projects.map((project, index) => (
+                        <div key={project.id} className="item-group">
+                            <label>Project Name</label>
+                            <input
+                                type="text"
+                                value={project.name}
+                                onChange={(e) => handleChange('projects', 'name', e.target.value, index)}
+                            />
+                            <label>Link (URL)</label>
+                            <input
+                                type="text"
+                                value={project.link}
+                                onChange={(e) => handleChange('projects', 'link', e.target.value, index)}
+                            />
+                            <button className="remove-btn" onClick={() => onRemoveItem('projects', index)}>
+                                <Trash2 size={12} style={{ display: 'inline', marginRight: '4px' }} /> Remove
+                            </button>
+                        </div>
+                    ))}
+                    <button className="add-btn" onClick={() => onAddItem('projects')}>
+                        <Plus size={14} style={{ display: 'inline', marginRight: '4px' }} /> Add Project
+                    </button>
+                </section>
+            )}
+
             {/* Skills */}
             <section className="form-group">
                 <h3 className="section-title">Skills</h3>
@@ -228,17 +257,31 @@ const CVForm = ({ data, onChange, onAddItem, onRemoveItem }) => {
             {data.certifications && (
                 <section className="form-group">
                     <h3 className="section-title">Certifications</h3>
-                    {data.certifications.map((cert, index) => (
-                        <div key={index} style={{ display: 'flex', marginBottom: '8px' }}>
-                            <input
-                                type="text"
-                                value={cert}
-                                onChange={(e) => handleChange('certifications', null, e.target.value, index)}
-                                style={{ marginBottom: 0 }}
-                            />
-                            <button className="remove-btn" onClick={() => onRemoveItem('certifications', index)}>X</button>
-                        </div>
-                    ))}
+                    {data.certifications.map((cert, index) => {
+                        const isObject = typeof cert === 'object' && cert !== null;
+                        const name = isObject ? cert.name : cert;
+                        const link = isObject ? cert.link : '';
+                        const id = isObject ? cert.id : index;
+                        return (
+                            <div key={id} className="item-group">
+                                <label>Certification Name</label>
+                                <input
+                                    type="text"
+                                    value={name || ''}
+                                    onChange={(e) => handleChange('certifications', 'name', e.target.value, index)}
+                                />
+                                <label>Link (URL)</label>
+                                <input
+                                    type="text"
+                                    value={link || ''}
+                                    onChange={(e) => handleChange('certifications', 'link', e.target.value, index)}
+                                />
+                                <button className="remove-btn" onClick={() => onRemoveItem('certifications', index)}>
+                                    <Trash2 size={12} style={{ display: 'inline', marginRight: '4px' }} /> Remove
+                                </button>
+                            </div>
+                        );
+                    })}
                     <button className="add-btn" onClick={() => onAddItem('certifications')}>
                         <Plus size={14} style={{ display: 'inline', marginRight: '4px' }} /> Add Certification
                     </button>
