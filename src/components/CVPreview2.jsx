@@ -77,7 +77,7 @@ const CVPreview2 = forwardRef(({ data }, ref) => {
                         backgroundColor: '#e6e6ea'
                     }}>
                         <img
-                            src={`${import.meta.env.BASE_URL}me.JPG`}
+                            src={personal.photo || `${import.meta.env.BASE_URL}me.JPG`}
                             alt="Profile"
                             style={{
                                 width: '100%',
@@ -160,7 +160,9 @@ const CVPreview2 = forwardRef(({ data }, ref) => {
                                     return (
                                         <div key={id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '60px' }}>
                                             <div style={{ padding: '3px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px' }}>
-                                                <QRCodeSVG value={link || ' '} size={52} />
+                                                <a href={link || '#'} target="_blank" rel="noopener noreferrer" style={{ cursor: link ? 'pointer' : 'default', textDecoration: 'none' }}>
+                                                    <QRCodeSVG value={link || ' '} size={52} />
+                                                </a>
                                             </div>
                                             <div style={{ fontSize: '9px', fontWeight: 'bold', color: '#333', textAlign: 'center', lineHeight: '1.2' }}>
                                                 {name}
@@ -192,8 +194,8 @@ const CVPreview2 = forwardRef(({ data }, ref) => {
                                 <div key={ref.id} style={{ marginBottom: '12px' }}>
                                     <div style={{ fontSize: '12px', fontWeight: 'bold' }}>{ref.name}</div>
                                     <div style={{ fontSize: '11px', color: '#555', marginBottom: '2px' }}>{ref.title}</div>
-                                    <div style={{ fontSize: '11px', color: '#333' }}>Phone: {ref.phone}</div>
-                                    <div style={{ fontSize: '11px', color: '#333' }}>Email: {ref.email}</div>
+                                    {ref.phone && <div style={{ fontSize: '11px', color: '#333' }}>Phone: {ref.phone}</div>}
+                                    {ref.email && <div style={{ fontSize: '11px', color: '#333' }}>Email: {ref.email}</div>}
                                 </div>
                             ))}
                         </div>
@@ -261,7 +263,9 @@ const CVPreview2 = forwardRef(({ data }, ref) => {
                                 {data.projects.map((proj) => (
                                     <div key={proj.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '76px' }}>
                                         <div style={{ padding: '3px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px' }}>
-                                            <QRCodeSVG value={proj.link || ' '} size={68} />
+                                            <a href={proj.link || '#'} target="_blank" rel="noopener noreferrer" style={{ cursor: proj.link ? 'pointer' : 'default', textDecoration: 'none' }}>
+                                                <QRCodeSVG value={proj.link || ' '} size={68} />
+                                            </a>
                                         </div>
                                         <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#333', textAlign: 'center', lineHeight: '1.2' }}>
                                             {proj.name}

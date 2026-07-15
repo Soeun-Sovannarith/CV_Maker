@@ -14,6 +14,21 @@ const CVForm = ({ data, onChange, onAddItem, onRemoveItem }) => {
             {/* Personal Details */}
             <section className="form-group">
                 <h3 className="section-title">Personal Details</h3>
+                <label>Profile Photo</label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (upload) => {
+                                handleChange('personal', 'photo', upload.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }}
+                />
                 <label>Full Name</label>
                 <input
                     type="text"

@@ -1,12 +1,30 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
 import CVPreview2 from './components/CVPreview2';
+import CVPreview3 from './components/CVPreview3';
 import { Download } from 'lucide-react';
+import { supabase } from './utils/supabase';
+import { generateDocx } from './utils/generateDocx';
 
 function App() {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    async function getTodos() {
+      const { data: todos } = await supabase.from('todos').select();
+
+      if (todos) {
+        setTodos(todos);
+        console.log('Fetched todos:', todos);
+      }
+    }
+
+    getTodos();
+  }, []);
+
   const [selectedTemplate, setSelectedTemplate] = useState('template2');
   const [cvData, setCvData] = useState({
     personal: {
@@ -19,7 +37,7 @@ function App() {
       linkedin: 'linkedin.com/in/soeun-sovannarith-116858291',
       github: 'github.com/Soeun-Sovannarith'
     },
-    summary: 'Backend Developer specializing in Java and the Spring framework, with proven experience developing robust RESTful and SOAP APIs for internal and external usage. Strong foundation in Object-Oriented Programming (OOP) and comprehensive knowledge of SQL, RDBMS, and database design. Adept at cross-functional collaboration to solve complex problems, maintain backend applications, and assist in creating system designs and functional specifications for new projects. Skilled in supporting seamless system integrations with third-party partners.',
+    summary: 'Backend Developer specializing in Java and the Spring framework, with proven experience developing robust RESTful for internal and external usage. Strong foundation in Object-Oriented Programming (OOP) and comprehensive knowledge of SQL, RDBMS, and database design. Adept at cross-functional collaboration to solve complex problems, maintain backend applications, and assist in creating system designs and functional specifications for new projects. Skilled in supporting seamless system integrations with third-party partners.',
     experience: [
       {
         id: 1,
@@ -43,17 +61,17 @@ function App() {
         id: 1,
         school: 'KSHRD CENTER',
         degree: 'Full-Stack Development',
-        start: 'Jan 2026',
+        start: 'Feb 2026',
         end: 'Jul 2026',
-        description: ''
+        description: 'Basic Course : February 02nd - July 09th, 2026, Mon-Fri, 7.5 hours per day, 810 hours\n- JAVA : J2SE (Basic Java and OOP concepts), J2EE (Maven and MVC pattern)\n- WEB : HTML, CSS, JavaScript, CSS Flexbox, Tailwind CSS, JSON, Next.js,\n- SPRING : Spring Boot, MyBatis Data Access, Spring RESTful Web Service, Spring Security, JSON Web Token, Thymeleaf Engine\n- Database : Data Modeling, PostgreSQL, SQL(Basic SQL)\n- Additional Courses : Linux, Docker, Version Control (GitHub) and UI/UX, AI Coding tool (Cursor, Claude Code, Codex, etc.)'
       },
       {
         id: 2,
         school: 'ABOVE AND BEYOND',
         degree: 'Prompt Engineering',
-        start: 'Dec 2025',
-        end: '',
-        description: ''
+        start: 'Oct 2025',
+        end: 'Nov 2025',
+        description: 'Gained practical knowledge in designing, optimizing, and structuring effective prompts for large language models (LLMs). Learned techniques to improve AI output quality, handle complex tasks, and integrate prompt engineering into real-world applications.\nSkills: Prompt Engineering, Prompting techniques, AI Agents, Generative AI Tools, Promoting best practices'
       },
       {
         id: 3,
@@ -73,15 +91,16 @@ function App() {
       }
     ],
     certifications: [
-      { id: 1, name: 'AWS Certified Developer', link: 'https://aws.amazon.com' }
+      { id: 1, name: 'AWS Certified Developer', link: 'https://aws.amazon.com' },
+      { id: 2, name: 'Prompt Engineering Course - ABOVE AND BEYOND (PE2025011)', link: '' }
     ],
     projects: [
       { id: 1, name: 'Portfolio Website', link: 'https://portfolio.rith.codes' }
     ],
     skills: [
       'Backend Development: Java, Spring Framework (Spring Boot), Object-Oriented Programming (OOP), System Design',
-      'API & Integration: RESTful & SOAP API Development, Third-Party System Integration, Middleware Solutions',
-      'Database & Architecture: SQL, Oracle, RDBMS, Database Design, Performance Optimization',
+      'API & Integration: RESTful API Development, Third-Party System Integration, Middleware Solutions',
+      'Database & Architecture: SQL, PostgreSQL, RDBMS, Database Design, Performance Optimization',
       'Software Engineering: Cross-Functional Team Collaboration, Bug Fixing & Maintenance, SDLC Methodologies, Git',
       'App Security & Infrastructure: Spring Security, JWT/OAuth2, Linux OS Administration, Docker, CI/CD'
     ],
@@ -90,6 +109,13 @@ function App() {
       { language: 'English', proficiency: 'Fluent' }
     ],
     references: [
+      {
+        id: 4,
+        name: 'POLEN SOK',
+        title: 'Student Affairs Manager, KSHRD Center',
+        phone: '',
+        email: 'polen.hrd@gmail.com'
+      },
       {
         id: 1,
         name: 'VICHHAIY SEREY',
@@ -103,13 +129,6 @@ function App() {
         title: 'Senior Project Manager, FTB BANK',
         phone: '+855 968650464',
         email: 'Youlayhang.com'
-      },
-      {
-        id: 3,
-        name: 'PHANNARITH DUY',
-        title: 'Human Resource Director and Admin, Aqua Lagoon Real Estate',
-        phone: '+855 61858838',
-        email: 'hayashimotomori@gmail.com'
       }
     ]
   });
@@ -118,6 +137,15 @@ function App() {
 
   const handleDownloadPdf = () => {
     window.print();
+  };
+
+  const handleDownloadDocx = async () => {
+    try {
+      await generateDocx(cvData, selectedTemplate);
+    } catch (error) {
+      console.error('Error generating DOCX:', error);
+      alert('Failed to generate DOCX file.');
+    }
   };
 
   const handleChange = (section, field, value, index = null) => {
@@ -202,10 +230,15 @@ function App() {
           >
             <option value="template1">Template 1 (Classic)</option>
             <option value="template2">Template 2 (Modern Timeline)</option>
+            <option value="template3">Template 3 (Executive / Word-Friendly)</option>
           </select>
           <button className="download-btn" onClick={handleDownloadPdf}>
             <Download size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             Download PDF
+          </button>
+          <button className="download-btn" onClick={handleDownloadDocx}>
+            <Download size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            Download DOCX
           </button>
         </div>
         <CVForm
@@ -219,8 +252,10 @@ function App() {
         <div className="preview-container">
           {selectedTemplate === 'template1' ? (
             <CVPreview ref={printRef} data={cvData} />
-          ) : (
+          ) : selectedTemplate === 'template2' ? (
             <CVPreview2 ref={printRef} data={cvData} />
+          ) : (
+            <CVPreview3 ref={printRef} cvData={cvData} />
           )}
         </div>
       </div>

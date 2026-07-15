@@ -121,7 +121,7 @@ const CVPreview = forwardRef(({ data }, ref) => {
                                 <div style={{ fontSize: '12px', fontWeight: 'bold' }}>{edu.start}{edu.end ? ` - ${edu.end}` : ''}</div>
                                 <div style={{ fontSize: '12px', textTransform: 'uppercase', fontWeight: '600', marginBottom: '2px' }}>{edu.school}</div>
                                 <div style={{ fontSize: '12px', color: '#555' }}>• {edu.degree}</div>
-                                {edu.description && <div style={{ fontSize: '12px', color: '#555' }}>• {edu.description}</div>}
+                                {edu.description && <div style={{ fontSize: '12px', color: '#555', whiteSpace: 'pre-line' }}>{edu.description}</div>}
                             </div>
                         ))}
                     </div>
@@ -134,7 +134,9 @@ const CVPreview = forwardRef(({ data }, ref) => {
                                 {data.projects.map((proj) => (
                                     <div key={proj.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '76px' }}>
                                         <div style={{ padding: '3px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px' }}>
-                                            <QRCodeSVG value={proj.link || ' '} size={68} />
+                                            <a href={proj.link || '#'} target="_blank" rel="noopener noreferrer" style={{ cursor: proj.link ? 'pointer' : 'default', textDecoration: 'none' }}>
+                                                <QRCodeSVG value={proj.link || ' '} size={68} />
+                                            </a>
                                         </div>
                                         <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#333', textAlign: 'center', lineHeight: '1.2' }}>
                                             {proj.name}
@@ -158,7 +160,9 @@ const CVPreview = forwardRef(({ data }, ref) => {
                                     return (
                                         <div key={id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '60px' }}>
                                             <div style={{ padding: '3px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px' }}>
-                                                <QRCodeSVG value={link || ' '} size={52} />
+                                                <a href={link || '#'} target="_blank" rel="noopener noreferrer" style={{ cursor: link ? 'pointer' : 'default', textDecoration: 'none' }}>
+                                                    <QRCodeSVG value={link || ' '} size={52} />
+                                                </a>
                                             </div>
                                             <div style={{ fontSize: '9px', fontWeight: 'bold', color: '#333', textAlign: 'center', lineHeight: '1.2' }}>
                                                 {name}
@@ -233,8 +237,8 @@ const CVPreview = forwardRef(({ data }, ref) => {
                                     <div key={ref.id}>
                                         <div style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '2px' }}>{ref.name}</div>
                                         <div style={{ fontSize: '12px', color: '#444', marginBottom: '2px' }}>{ref.title}</div>
-                                        <div style={{ fontSize: '12px', color: '#555' }}>{ref.phone}</div>
-                                        <div style={{ fontSize: '12px', color: '#555' }}>{ref.email}</div>
+                                        {ref.phone && <div style={{ fontSize: '12px', color: '#555' }}>{ref.phone}</div>}
+                                        {ref.email && <div style={{ fontSize: '12px', color: '#555' }}>{ref.email}</div>}
                                     </div>
                                 ))}
                             </div>
